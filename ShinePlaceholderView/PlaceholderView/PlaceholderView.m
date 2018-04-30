@@ -33,12 +33,12 @@
     }
     return _animationImages;
 }
--(UIColor *)placeholderColor
+-(UIColor *)placeholderTextColor
 {
-    if (!_placeholderColor){
-        _placeholderColor = [UIColor darkGrayColor];
+    if (!_placeholderTextColor){
+        _placeholderTextColor = [UIColor darkGrayColor];
     }
-    return _placeholderColor;
+    return _placeholderTextColor;
 }
 -(NSString *)placeholder
 {
@@ -55,10 +55,10 @@
     }
     return _placeholderImage;
 }
--(PlaceholderViewType)type
+-(PlaceholderImageType)type
 {
     if (!_type) {
-        _type = PlaceholderViewTypeImage;
+        _type = PlaceholderImageTypeImage;
     }
     return _type;
 }
@@ -127,7 +127,7 @@
         NSLog(@"PlaceholderView: parent == nil 请传入parent 或者通过 addSubview 方式添加到父视图上");
         return;
     }
-    if (self.type == PlaceholderViewTypeAnimation) {
+    if (self.type == PlaceholderImageTypeAnimation) {
         [self startAnimation];
     }
     self.hidden = NO;
@@ -137,7 +137,7 @@
 
 -(void)dismiss
 {
-    if (self.type == PlaceholderViewTypeAnimation) {
+    if (self.type == PlaceholderImageTypeAnimation) {
         [self stopAnimation];
     }
     [self removeFromSuperview];
@@ -152,24 +152,27 @@
 -(void)setPlaceholderImage:(UIImage *)placeholderImage
 {
     _placeholderImage = placeholderImage;
+    
+
+    
     self.placeholderImageView.image = placeholderImage;
 }
 
--(void)setPlaceholderColor:(UIColor *)placeholderColor
+-(void)setplaceholderTextColor:(UIColor *)placeholderTextColor
 {
-    _placeholderColor = placeholderColor;
-    [self.placeholderButton setTitleColor:placeholderColor forState:normal];
+    _placeholderTextColor = placeholderTextColor;
+    [self.placeholderButton setTitleColor:placeholderTextColor forState:normal];
 }
 
 
--(void)setType:(PlaceholderViewType)type
+-(void)setType:(PlaceholderImageType)type
 {
     _type = type;
     
-    if (type == PlaceholderViewTypeImage) {
+    if (type == PlaceholderImageTypeImage) {
         
         [self stopAnimation];
-    }else if (type == PlaceholderViewTypeAnimation){
+    }else if (type == PlaceholderImageTypeAnimation){
         
         [self startAnimation];
         
@@ -180,17 +183,17 @@
 
 - (IBAction)placeholderButtonClick:(UIButton *)sender
 {
-    if (self.textClickBlock) {
+    if (self.textClickCallBack) {
         
-        self.textClickBlock();
+        self.textClickCallBack();
     }
     
 }
 - (void)placeholderImageClick:(UITapGestureRecognizer *)sender
 {
-    if (self.imageClickBlock) {
+    if (self.imageClickCallBack) {
         
-        self.imageClickBlock();
+        self.imageClickCallBack();
     }
 }
 
@@ -230,8 +233,8 @@
         self.placeholderImage = config.placeholderImage;
     }
     
-    if (!self.placeholderColor) {
-        self.placeholderColor = config.placeholderColor;
+    if (!self.placeholderTextColor) {
+        self.placeholderTextColor = config.placeholderTextColor;
     }
     
     if (!self.animationImages) {

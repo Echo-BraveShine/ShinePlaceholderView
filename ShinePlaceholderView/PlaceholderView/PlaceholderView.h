@@ -8,11 +8,20 @@
 #import <UIKit/UIKit.h>
 
 
-typedef NS_ENUM(NSUInteger, PlaceholderViewType) {
-    PlaceholderViewTypeImage,
-    PlaceholderViewTypeAnimation,
+/**
+ 中间UIImageView 显示类型
+
+ - PlaceholderViewTypeImage: 图片
+ - PlaceholderViewTypeAnimation: GIF
+ */
+typedef NS_ENUM(NSUInteger, PlaceholderImageType) {
+    PlaceholderImageTypeImage,
+    PlaceholderImageTypeAnimation,
 };
 
+/**
+ 配置类  单例保存默认的配置信息，通过修改各属性可以修改默认配置
+ */
 @interface PlaceholderViewConfiguration : NSObject
 
 /** 占位文字*/
@@ -22,38 +31,35 @@ typedef NS_ENUM(NSUInteger, PlaceholderViewType) {
 @property (nonatomic,strong) UIImage * placeholderImage;
 
 /** 占位文字的颜色*/
-@property (nonatomic,strong) UIColor *placeholderColor;
+@property (nonatomic,strong) UIColor *placeholderTextColor;
 
 /** 占位GIF图片数组 */
 @property (nonatomic,strong) NSArray<UIImage *> *animationImages;
 
 /** 占位图片类型 单图或者GIF*/
-@property (nonatomic,assign)PlaceholderViewType type;
+@property (nonatomic,assign)PlaceholderImageType type;
 
 /** GIF一次完整显示时间 通过此参数控制GIF速度*/
 @property (nonatomic) NSTimeInterval animationDuration;
+
 
 +(instancetype)shareConfiguration;
 
 @end
 
-typedef void(^PlaceholderImageClickBlock)(void);
 
-typedef void(^PlaceholderTextClickBlock)(void);
-
-
-
+typedef void(^PlaceholderClickCallBack)(void);
 
 @interface PlaceholderView : UIView
 
 /** 内容区域*/
-@property (weak, nonatomic) IBOutlet UIView *contentView;
+@property (weak, nonatomic)  UIView *contentView;
 
 /** 占位图UIImageView*/
-@property (weak, nonatomic) IBOutlet UIImageView *placeholderImageView;
+@property (weak, nonatomic)  UIImageView *placeholderImageView;
 
 /** 占位文字按钮*/
-@property (weak, nonatomic) IBOutlet UIButton *placeholderButton;
+@property (weak, nonatomic)  UIButton *placeholderButton;
 
 /** 占位图向下偏移量 （并不是内容区域向下偏移量，是整个视图的向下偏移量） */
 @property (nonatomic,assign) CGFloat ofset;
@@ -65,7 +71,7 @@ typedef void(^PlaceholderTextClickBlock)(void);
 @property (nonatomic,strong) NSString * placeholder;
 
 /** 占位文字的颜色*/
-@property (nonatomic,strong) UIColor *placeholderColor;
+@property (nonatomic,strong) UIColor *placeholderTextColor;
 
 /** 占位GIF图片数组*/
 @property (nonatomic,strong) NSArray<UIImage *> *animationImages;
@@ -74,14 +80,13 @@ typedef void(^PlaceholderTextClickBlock)(void);
 @property (nonatomic) NSTimeInterval animationDuration;
 
 /** 占位图片类型 单图或者GIF*/
-@property (nonatomic,assign)PlaceholderViewType type;
+@property (nonatomic,assign)PlaceholderImageType type;
 
 /** 图片区域点击回调*/
-@property (nonatomic,copy) PlaceholderImageClickBlock imageClickBlock;
+@property (nonatomic,copy) PlaceholderClickCallBack imageClickCallBack;
 
 /** 文字区域点击回调*/
-@property (nonatomic,copy) PlaceholderTextClickBlock textClickBlock;
-
+@property (nonatomic,copy) PlaceholderClickCallBack textClickCallBack;
 
 /** 保留父视图，便于显示操作*/
 @property (nonatomic,weak) UIView *parent;

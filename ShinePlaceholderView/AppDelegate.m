@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-
+#import "PlaceholderView.h"
 @interface AppDelegate ()
 
 @end
@@ -17,6 +17,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    [PlaceholderViewConfiguration shareConfiguration].placeholderImage = nil;
+    [PlaceholderViewConfiguration shareConfiguration].placeholder = @"PlaceholderView";
     return YES;
 }
 
