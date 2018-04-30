@@ -53,13 +53,13 @@ typedef void(^PlaceholderClickCallBack)(void);
 @interface PlaceholderView : UIView
 
 /** 内容区域*/
-@property (weak, nonatomic)  UIView *contentView;
+@property (weak, nonatomic) IBOutlet UIView *contentView;
 
 /** 占位图UIImageView*/
-@property (weak, nonatomic)  UIImageView *placeholderImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *placeholderImageView;
 
 /** 占位文字按钮*/
-@property (weak, nonatomic)  UIButton *placeholderButton;
+@property (weak, nonatomic) IBOutlet UIButton *placeholderButton;
 
 /** 占位图向下偏移量 （并不是内容区域向下偏移量，是整个视图的向下偏移量） */
 @property (nonatomic,assign) CGFloat ofset;
