@@ -62,7 +62,7 @@ typedef void(^PlaceholderClickCallBack)(void);
 @property (weak, nonatomic) IBOutlet UIButton *placeholderButton;
 
 /** 占位图向下偏移量 （并不是内容区域向下偏移量，是整个视图的向下偏移量） */
-@property (nonatomic,assign) CGFloat ofset;
+@property (nonatomic,assign) CGFloat offset;
 
 /** 占位图片*/
 @property (nonatomic,strong) UIImage * placeholderImage;

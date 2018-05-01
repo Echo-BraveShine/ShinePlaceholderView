@@ -158,7 +158,7 @@
     self.placeholderImageView.image = placeholderImage;
 }
 
--(void)setplaceholderTextColor:(UIColor *)placeholderTextColor
+-(void)setPlaceholderTextColor:(UIColor *)placeholderTextColor
 {
     _placeholderTextColor = placeholderTextColor;
     [self.placeholderButton setTitleColor:placeholderTextColor forState:normal];
@@ -211,16 +211,16 @@
     [self.placeholderImageView stopAnimating];
 }
 
--(void)setOfset:(CGFloat)ofset
+-(void)setOffset:(CGFloat)offset
 {
     //为了防止重复设置造成的ofset累加 所以每次设置之前都要减去上一次设置的
-    if (!_ofset) {
-        _ofset = 0;
+    if (!_offset) {
+        _offset = 0;
     }
     
-    CGFloat y = self.frame.origin.y - _ofset;
-    _ofset = ofset;
-    self.frame = CGRectMake(0, y + ofset, self.bounds.size.width, self.bounds.size.height - ofset);
+    CGFloat y = self.frame.origin.y - _offset;
+    _offset = offset;
+    self.frame = CGRectMake(0, y + offset, self.bounds.size.width, self.bounds.size.height - offset);
 }
 
 -(void)defaultConfiguration
@@ -260,9 +260,9 @@
     [self defaultConfiguration];
 
     self.parent = newSuperview;
-    if (self.ofset) {
+    if (self.offset) {
         
-        self.frame = CGRectMake(0, self.ofset, newSuperview.bounds.size.width, newSuperview.bounds.size.height - self.ofset);
+        self.frame = CGRectMake(0, self.offset, newSuperview.bounds.size.width, newSuperview.bounds.size.height - self.offset);
     }else{
         
         self.frame = newSuperview.bounds;
