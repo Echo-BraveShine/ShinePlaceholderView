@@ -21,6 +21,15 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
     [self.view.placeholderView show];
+    
+
+    self.view.placeholderView.imageClickCallBack = ^{
+        NSLog(@"imageViewClick");
+    };
+    
+    self.view.placeholderView.textClickCallBack = ^{
+        NSLog(@"textViewClick");
+    };
 
     
     NSArray *array1 = @[@"changeType",@"changeMode",@"changeOffset",@"changeImageAspect"];

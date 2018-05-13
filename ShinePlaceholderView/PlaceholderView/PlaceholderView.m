@@ -129,12 +129,9 @@
     if (self) {
         self.parent = view;
         [self setupViews];
-        
     }
     return self;
 }
-
-
 
 -(UIImageView *)placeholderImageView
 {
@@ -142,6 +139,9 @@
         _placeholderImageView = [[UIImageView alloc]init];
         _placeholderButton.contentMode = 2;
         _placeholderImageView.translatesAutoresizingMaskIntoConstraints = NO;
+        _placeholderImageView.userInteractionEnabled = YES;
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(placeholderImageClick:)];
+        [_placeholderImageView addGestureRecognizer:tap];
     }
     return _placeholderImageView;
 }
@@ -154,6 +154,7 @@
         _placeholderButton.titleLabel.textAlignment = NSTextAlignmentCenter;
         _placeholderButton.titleLabel.font = [UIFont systemFontOfSize:14];
         _placeholderButton.translatesAutoresizingMaskIntoConstraints = NO;
+        [_placeholderButton addTarget:self action:@selector(placeholderButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _placeholderButton;
 }
@@ -164,7 +165,6 @@
     self.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:self.placeholderImageView];
     [self addSubview:self.placeholderButton];
-    
 }
 
 -(void)show
