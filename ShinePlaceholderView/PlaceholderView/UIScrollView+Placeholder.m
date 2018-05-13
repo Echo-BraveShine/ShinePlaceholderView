@@ -45,28 +45,6 @@
     }else{
         [self.placeholderView dismiss];
     }
-    
-    if (self.mj_footer != nil) {
-        
-        if ([self.mj_footer isKindOfClass:[MJRefreshAutoNormalFooter class]]) {
-            
-            MJRefreshAutoNormalFooter *footer  = (MJRefreshAutoNormalFooter *)self.mj_footer;
-            
-            [self layoutIfNeeded];
-            
-            if (self.contentSize.height < self.bounds.size.height) {
-                
-                footer.stateLabel.hidden = YES;
-                
-                footer.refreshingTitleHidden = YES;
-                
-            }else{
-                footer.stateLabel.hidden = NO;
-                
-                footer.refreshingTitleHidden = NO;
-            }
-        }
-    }
 }
 
 @end
