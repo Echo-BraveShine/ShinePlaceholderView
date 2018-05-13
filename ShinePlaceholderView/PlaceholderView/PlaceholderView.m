@@ -7,6 +7,7 @@
 
 #import "PlaceholderView.h"
 #import "MJRefresh.h"
+
 @implementation PlaceholderViewConfiguration
 
 +(instancetype)shareConfiguration
@@ -18,7 +19,7 @@
     return config;
 }
 
--(NSArray<UIImage *> *)animationImages
+- (NSArray<UIImage *> *)animationImages
 {
     if (!_animationImages) {
         
@@ -33,6 +34,7 @@
     }
     return _animationImages;
 }
+
 -(UIColor *)placeholderTextColor
 {
     if (!_placeholderTextColor){
@@ -63,6 +65,14 @@
     return _type;
 }
 
+-(PlaceholderViewMode)mode
+{
+    if (!_mode) {
+        _mode = PlaceholderViewModeDefault;
+    }
+    return _mode;
+}
+
 -(NSTimeInterval)animationDuration
 {
     if (!_animationDuration) {
@@ -73,18 +83,8 @@
 
 @end
 
-@implementation PlaceholderView
 
-+(instancetype)create
-{
-    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
-    PlaceholderView *placeholderView = [bundle loadNibNamed:NSStringFromClass([self class]) owner:nil options:nil].lastObject;
-    placeholderView.placeholderButton.titleLabel.numberOfLines = 0;
-    placeholderView.placeholderButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:placeholderView action:@selector(placeholderImageClick:)];
-    [placeholderView.placeholderImageView addGestureRecognizer:tap];
-    return placeholderView;
-}
+@implementation PlaceholderView
 
 +(instancetype)placeholderViewForView:(UIView *)view
 {
@@ -107,18 +107,64 @@
 
 - (instancetype)init
 {
-    return [PlaceholderView create];
-}
-- (instancetype)initWithFrame:(CGRect)frame
-{
-    self = [PlaceholderView create];
+    self = [super init];
+    if (self) {
+        [self setupViews];
+    }
     return self;
 }
+
+-(instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self setupViews];
+    }
+    return self;
+}
+
 - (instancetype)initWithView:(UIView *)view
 {
-    self = [PlaceholderView create];
-    self.parent = view;
+    self = [super init];
+    if (self) {
+        self.parent = view;
+        [self setupViews];
+        
+    }
     return self;
+}
+
+
+
+-(UIImageView *)placeholderImageView
+{
+    if (!_placeholderImageView) {
+        _placeholderImageView = [[UIImageView alloc]init];
+        _placeholderButton.contentMode = 2;
+        _placeholderImageView.translatesAutoresizingMaskIntoConstraints = NO;
+    }
+    return _placeholderImageView;
+}
+
+-(UIButton *)placeholderButton
+{
+    if (!_placeholderButton) {
+        _placeholderButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _placeholderButton.titleLabel.numberOfLines = 0;
+        _placeholderButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+        _placeholderButton.titleLabel.font = [UIFont systemFontOfSize:14];
+        _placeholderButton.translatesAutoresizingMaskIntoConstraints = NO;
+    }
+    return _placeholderButton;
+}
+
+
+-(void)setupViews
+{
+    self.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addSubview:self.placeholderImageView];
+    [self addSubview:self.placeholderButton];
+    
 }
 
 -(void)show
@@ -127,17 +173,19 @@
         NSLog(@"PlaceholderView: parent == nil 请传入parent 或者通过 addSubview 方式添加到父视图上");
         return;
     }
-    if (self.type == PlaceholderImageTypeAnimation) {
+    if (self.type == PlaceholderImageTypeGif) {
         [self startAnimation];
     }
     self.hidden = NO;
     [self.parent addSubview:self];
     [self.parent bringSubviewToFront:self];
+    [self updateConstraints];
+    [self layoutIfNeeded];
 }
 
 -(void)dismiss
 {
-    if (self.type == PlaceholderImageTypeAnimation) {
+    if (self.type == PlaceholderImageTypeGif) {
         [self stopAnimation];
     }
     [self removeFromSuperview];
@@ -152,9 +200,6 @@
 -(void)setPlaceholderImage:(UIImage *)placeholderImage
 {
     _placeholderImage = placeholderImage;
-    
-
-    
     self.placeholderImageView.image = placeholderImage;
 }
 
@@ -164,27 +209,45 @@
     [self.placeholderButton setTitleColor:placeholderTextColor forState:normal];
 }
 
-
 -(void)setType:(PlaceholderImageType)type
 {
     _type = type;
     
+    if (self.superview == nil) {
+        return;
+    }
+    
     if (type == PlaceholderImageTypeImage) {
-        
         [self stopAnimation];
-    }else if (type == PlaceholderImageTypeAnimation){
-        
+    }else if (type == PlaceholderImageTypeGif){
         [self startAnimation];
-        
     }
     
 }
 
+-(void)setMode:(PlaceholderViewMode)mode
+{
+    _mode = mode;
+    
+    for (UIView *view in self.subviews) {
+        [view removeFromSuperview];
+    }
+    
+    if (mode == PlaceholderViewModeText) {
+        [self addSubview:self.placeholderButton];
+    }else if (mode == PlaceholderViewModeImage) {
+        [self addSubview:self.placeholderImageView];
+    }else{
+        [self addSubview:self.placeholderImageView];
+        [self addSubview:self.placeholderButton];
+    }
+    [self updateConstraints];
+}
 
-- (IBAction)placeholderButtonClick:(UIButton *)sender
+
+- (void)placeholderButtonClick:(UIButton *)sender
 {
     if (self.textClickCallBack) {
-        
         self.textClickCallBack();
     }
     
@@ -192,14 +255,12 @@
 - (void)placeholderImageClick:(UITapGestureRecognizer *)sender
 {
     if (self.imageClickCallBack) {
-        
         self.imageClickCallBack();
     }
 }
 
 -(void)startAnimation
 {
-    
     self.placeholderImageView.animationImages = self.animationImages;
     self.placeholderImageView.animationDuration = self.animationDuration;
     self.placeholderImageView.animationRepeatCount = 0;
@@ -213,14 +274,28 @@
 
 -(void)setOffset:(CGFloat)offset
 {
-    //为了防止重复设置造成的ofset累加 所以每次设置之前都要减去上一次设置的
-    if (!_offset) {
-        _offset = 0;
+    if (_offset == offset) {
+        return;
     }
-    
-    CGFloat y = self.frame.origin.y - _offset;
     _offset = offset;
-    self.frame = CGRectMake(0, y + offset, self.bounds.size.width, self.bounds.size.height - offset);
+    if (self.offsetConstraint && self.superview) {
+        self.offsetConstraint.constant = offset;
+    }
+}
+
+-(void)setImageAspect:(CGFloat)imageAspect
+{
+    if (_imageAspect == imageAspect) {
+        return;
+    }
+    _imageAspect = imageAspect;
+    if (self.imageAspectRatioConstraint && self.parent) {
+        [self.placeholderImageView removeConstraint:self.imageAspectRatioConstraint];
+        NSLayoutConstraint *imageAspectConstraint = [NSLayoutConstraint constraintWithItem:self.placeholderImageView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.placeholderImageView attribute:NSLayoutAttributeWidth multiplier:imageAspect constant:0];
+        [self.placeholderImageView addConstraint:imageAspectConstraint];
+        self.imageAspectRatioConstraint = imageAspectConstraint;
+        [self layoutIfNeeded];
+    }
 }
 
 -(void)defaultConfiguration
@@ -243,32 +318,112 @@
     
     if (!self.animationDuration) {
         self.animationDuration = config.animationDuration;
+    }else{
+        self.animationDuration = self.animationDuration;
     }
     
     if (!self.type) {
         self.type = config.type;
+    }else{
+        self.type = self.type;
+    }
+    
+    if (!self.mode) {
+        self.mode = config.mode;
+    }
+    
+    if (!self.offset) {
+        if (!config.offset) {
+            self.offset = self.parent.bounds.size.height/4;
+        }else{
+            self.offset = config.offset;
+        }
+    }
+    
+    if (!self.imageAspect) {
+        if (!config.imageAspect) {
+            self.imageAspect = 0.75;
+        }else{
+            self.imageAspect = config.imageAspect;
+        }
     }
 }
 
 -(void)willMoveToSuperview:(UIView *)newSuperview
 {
     [super willMoveToSuperview:newSuperview];
-   
+    
     if (newSuperview == nil) {
         return;
     }
+    self.parent = newSuperview;
+    self.hidden = NO;
     [self defaultConfiguration];
 
-    self.parent = newSuperview;
-    if (self.offset) {
-        
-        self.frame = CGRectMake(0, self.offset, newSuperview.bounds.size.width, newSuperview.bounds.size.height - self.offset);
-    }else{
-        
-        self.frame = newSuperview.bounds;
-    }
 }
 
 
+
+-(void)updateConstraints
+{
+    
+    if (self.superview == nil) {
+        [super updateConstraints];
+        return;
+    }
+    
+    NSLayoutConstraint *contentCenterX = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.parent attribute:NSLayoutAttributeCenterX multiplier:1 constant:0];
+    NSLayoutConstraint *contentTop = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.parent attribute:NSLayoutAttributeTop multiplier:1 constant:self.offset];
+    self.offsetConstraint = contentTop;
+    NSLayoutConstraint *contentWidth = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationLessThanOrEqual toItem:self.parent attribute:NSLayoutAttributeWidth multiplier:0.75 constant:0];
+    
+    [self.parent addConstraint:contentCenterX];
+    [self.parent addConstraint:contentTop];
+    [self.parent addConstraint:contentWidth];
+    
+    if (self.mode == PlaceholderViewModeDefault || self.mode == PlaceholderViewModeImage) {
+        UIImageView *placeholderImageView = self.placeholderImageView;
+        
+        NSLayoutConstraint *imageAspect = [NSLayoutConstraint constraintWithItem:placeholderImageView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:placeholderImageView attribute:NSLayoutAttributeWidth multiplier:0.75 constant:0];
+        [placeholderImageView addConstraint:imageAspect];
+        self.imageAspectRatioConstraint = imageAspect;
+        
+        NSLayoutConstraint *imageViewTop = [NSLayoutConstraint constraintWithItem:placeholderImageView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0f constant:0];
+        [self addConstraint:imageViewTop];
+        
+        NSLayoutConstraint *imageViewLeft = [NSLayoutConstraint constraintWithItem:placeholderImageView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1.0f constant:0];
+        [self addConstraint:imageViewLeft];
+        
+        NSLayoutConstraint *imageViewRight = [NSLayoutConstraint constraintWithItem:placeholderImageView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0f constant:0];
+        [self addConstraint:imageViewRight];
+        
+        if (self.mode == PlaceholderViewModeImage) {
+            NSLayoutConstraint *placeholderBottom = [NSLayoutConstraint constraintWithItem:placeholderImageView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1.0f constant:0];
+            
+            [self addConstraint:placeholderBottom];
+        }
+    }
+    
+    if (self.mode == PlaceholderViewModeDefault || self.mode == PlaceholderViewModeText) {
+        UIButton *placeholderButton = self.placeholderButton;
+        NSLayoutConstraint *btnLeft = [NSLayoutConstraint constraintWithItem:placeholderButton attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1.0f constant:0];
+        [self addConstraint:btnLeft];
+        
+        NSLayoutConstraint *btnRight = [NSLayoutConstraint constraintWithItem:placeholderButton attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0f constant:0];
+        [self addConstraint:btnRight];
+        
+        NSLayoutConstraint *btnBottom = [NSLayoutConstraint constraintWithItem:placeholderButton attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1.0f constant:0];
+        [self addConstraint:btnBottom];
+        
+        if (self.mode == PlaceholderViewModeText) {
+            NSLayoutConstraint *btnTop = [NSLayoutConstraint constraintWithItem:placeholderButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0f constant:0];
+            [self addConstraint:btnTop];
+        }else{
+            NSLayoutConstraint *btnTop = [NSLayoutConstraint constraintWithItem:placeholderButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.placeholderImageView attribute:NSLayoutAttributeBottom multiplier:1.0f constant:0];
+            [self addConstraint:btnTop];
+        }
+    }
+    [super updateConstraints];
+}
 
 @end

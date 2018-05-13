@@ -14,11 +14,13 @@
 		5FBB92CA209603510015A559 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5FBB92C9209603510015A559 /* Assets.xcassets */; };
 		5FBB92CD209603510015A559 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5FBB92CB209603510015A559 /* LaunchScreen.storyboard */; };
 		5FBB92D0209603520015A559 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FBB92CF209603520015A559 /* main.m */; };
+		5FCD7D0720A8177600881857 /* DefaultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FCD7D0620A8177600881857 /* DefaultViewController.m */; };
+		5FCD7D0A20A819EB00881857 /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FCD7D0920A819EB00881857 /* TableViewController.m */; };
+		5FCD7D0D20A81A0E00881857 /* CollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FCD7D0C20A81A0E00881857 /* CollectionViewController.m */; };
 		5FE848CD209613D0000118AC /* UIScrollView+Placeholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FE848BD209613D0000118AC /* UIScrollView+Placeholder.m */; };
 		5FE848CE209613D0000118AC /* placeholder_image_gif_8.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FE848BE209613D0000118AC /* placeholder_image_gif_8.png */; };
 		5FE848CF209613D0000118AC /* PlaceholderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FE848BF209613D0000118AC /* PlaceholderView.m */; };
 		5FE848D0209613D0000118AC /* UIView+Placeholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FE848C0209613D0000118AC /* UIView+Placeholder.m */; };
-		5FE848D1209613D0000118AC /* PlaceholderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5FE848C1209613D0000118AC /* PlaceholderView.xib */; };
 		5FE848D2209613D0000118AC /* wen_empty.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FE848C2209613D0000118AC /* wen_empty.png */; };
 		5FE848D3209613D0000118AC /* placeholder_image_gif_5.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FE848C5209613D0000118AC /* placeholder_image_gif_5.png */; };
 		5FE848D4209613D0000118AC /* placeholder_image_gif_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FE848C6209613D0000118AC /* placeholder_image_gif_4.png */; };
@@ -41,11 +43,16 @@
 		5FBB92CC209603510015A559 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5FBB92CE209603520015A559 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5FBB92CF209603520015A559 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		5FCD7D0520A8177600881857 /* DefaultViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DefaultViewController.h; sourceTree = "<group>"; };
+		5FCD7D0620A8177600881857 /* DefaultViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DefaultViewController.m; sourceTree = "<group>"; };
+		5FCD7D0820A819EB00881857 /* TableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TableViewController.h; sourceTree = "<group>"; };
+		5FCD7D0920A819EB00881857 /* TableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TableViewController.m; sourceTree = "<group>"; };
+		5FCD7D0B20A81A0E00881857 /* CollectionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CollectionViewController.h; sourceTree = "<group>"; };
+		5FCD7D0C20A81A0E00881857 /* CollectionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CollectionViewController.m; sourceTree = "<group>"; };
 		5FE848BD209613D0000118AC /* UIScrollView+Placeholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+Placeholder.m"; sourceTree = "<group>"; };
 		5FE848BE209613D0000118AC /* placeholder_image_gif_8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder_image_gif_8.png; sourceTree = "<group>"; };
 		5FE848BF209613D0000118AC /* PlaceholderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceholderView.m; sourceTree = "<group>"; };
 		5FE848C0209613D0000118AC /* UIView+Placeholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Placeholder.m"; sourceTree = "<group>"; };
-		5FE848C1209613D0000118AC /* PlaceholderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlaceholderView.xib; sourceTree = "<group>"; };
 		5FE848C2209613D0000118AC /* wen_empty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wen_empty.png; sourceTree = "<group>"; };
 		5FE848C3209613D0000118AC /* UIScrollView+Placeholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+Placeholder.h"; sourceTree = "<group>"; };
 		5FE848C4209613D0000118AC /* PlaceholderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceholderView.h; sourceTree = "<group>"; };
@@ -99,6 +106,12 @@
 				5FBB92C1209603500015A559 /* AppDelegate.m */,
 				5FBB92C3209603500015A559 /* ViewController.h */,
 				5FBB92C4209603500015A559 /* ViewController.m */,
+				5FCD7D0520A8177600881857 /* DefaultViewController.h */,
+				5FCD7D0620A8177600881857 /* DefaultViewController.m */,
+				5FCD7D0820A819EB00881857 /* TableViewController.h */,
+				5FCD7D0920A819EB00881857 /* TableViewController.m */,
+				5FCD7D0B20A81A0E00881857 /* CollectionViewController.h */,
+				5FCD7D0C20A81A0E00881857 /* CollectionViewController.m */,
 				5FBB92C6209603500015A559 /* Main.storyboard */,
 				5FBB92C9209603510015A559 /* Assets.xcassets */,
 				5FBB92CB209603510015A559 /* LaunchScreen.storyboard */,
@@ -113,7 +126,6 @@
 			children = (
 				5FE848C4209613D0000118AC /* PlaceholderView.h */,
 				5FE848BF209613D0000118AC /* PlaceholderView.m */,
-				5FE848C1209613D0000118AC /* PlaceholderView.xib */,
 				5FE848C8209613D0000118AC /* UIView+Placeholder.h */,
 				5FE848C0209613D0000118AC /* UIView+Placeholder.m */,
 				5FE848C3209613D0000118AC /* UIScrollView+Placeholder.h */,
@@ -207,7 +219,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5FE848D1209613D0000118AC /* PlaceholderView.xib in Resources */,
 				5FE848D3209613D0000118AC /* placeholder_image_gif_5.png in Resources */,
 				5FE848D5209613D0000118AC /* placeholder_image_gif_6.png in Resources */,
 				5FBB92CD209603510015A559 /* LaunchScreen.storyboard in Resources */,
@@ -273,8 +284,11 @@
 				5FBB92C5209603500015A559 /* ViewController.m in Sources */,
 				5FBB92D0209603520015A559 /* main.m in Sources */,
 				5FBB92C2209603500015A559 /* AppDelegate.m in Sources */,
+				5FCD7D0720A8177600881857 /* DefaultViewController.m in Sources */,
 				5FE848D0209613D0000118AC /* UIView+Placeholder.m in Sources */,
 				5FE848CD209613D0000118AC /* UIScrollView+Placeholder.m in Sources */,
+				5FCD7D0A20A819EB00881857 /* TableViewController.m in Sources */,
+				5FCD7D0D20A81A0E00881857 /* CollectionViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

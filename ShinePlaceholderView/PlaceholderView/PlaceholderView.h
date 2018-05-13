@@ -8,15 +8,29 @@
 #import <UIKit/UIKit.h>
 
 
-/**
- 中间UIImageView 显示类型
 
- - PlaceholderViewTypeImage: 图片
- - PlaceholderViewTypeAnimation: GIF
+/**
+ UIImageView的显示样式
+ 
+ - PlaceholderImageTypeImage: 图片
+ - PlaceholderImageTypeGif: 动画
  */
 typedef NS_ENUM(NSUInteger, PlaceholderImageType) {
     PlaceholderImageTypeImage,
-    PlaceholderImageTypeAnimation,
+    PlaceholderImageTypeGif,
+};
+
+/**
+ 占位试图的显示样式
+ 
+ - PlaceholderViewModeDefault: 默认图片加文字
+ - PlaceholderViewModeText: 只有文字
+ - PlaceholderViewModeImage: 只有图片
+ */
+typedef NS_ENUM(NSUInteger, PlaceholderViewMode) {
+    PlaceholderViewModeDefault,
+    PlaceholderViewModeText,
+    PlaceholderViewModeImage,
 };
 
 /**
@@ -37,11 +51,19 @@ typedef NS_ENUM(NSUInteger, PlaceholderImageType) {
 @property (nonatomic,strong) NSArray<UIImage *> *animationImages;
 
 /** 占位图片类型 单图或者GIF*/
-@property (nonatomic,assign)PlaceholderImageType type;
+@property (nonatomic,assign) PlaceholderImageType type;
+
+/** 占位view的样式 （图文 只文字 只图片）*/
+@property (nonatomic,assign) PlaceholderViewMode mode;
 
 /** GIF一次完整显示时间 通过此参数控制GIF速度*/
 @property (nonatomic) NSTimeInterval animationDuration;
 
+/** 占位图自顶部起向下偏移量*/
+@property (nonatomic,assign) CGFloat offset;
+
+/** 图片区域宽高比*/
+@property (nonatomic,assign) CGFloat imageAspect;
 
 +(instancetype)shareConfiguration;
 
@@ -53,16 +75,13 @@ typedef void(^PlaceholderClickCallBack)(void);
 @interface PlaceholderView : UIView
 
 /** 内容区域*/
-@property (weak, nonatomic) IBOutlet UIView *contentView;
+//@property (nonatomic,strong) UIView *contentView;
 
 /** 占位图UIImageView*/
-@property (weak, nonatomic) IBOutlet UIImageView *placeholderImageView;
+@property (nonatomic,strong) UIImageView *placeholderImageView;
 
 /** 占位文字按钮*/
-@property (weak, nonatomic) IBOutlet UIButton *placeholderButton;
-
-/** 占位图向下偏移量 （并不是内容区域向下偏移量，是整个视图的向下偏移量） */
-@property (nonatomic,assign) CGFloat offset;
+@property (nonatomic,strong) UIButton *placeholderButton;
 
 /** 占位图片*/
 @property (nonatomic,strong) UIImage * placeholderImage;
@@ -82,6 +101,9 @@ typedef void(^PlaceholderClickCallBack)(void);
 /** 占位图片类型 单图或者GIF*/
 @property (nonatomic,assign)PlaceholderImageType type;
 
+/** 占位view的样式 （图文 只文字 只图片）*/
+@property (nonatomic,assign) PlaceholderViewMode mode;
+
 /** 图片区域点击回调*/
 @property (nonatomic,copy) PlaceholderClickCallBack imageClickCallBack;
 
@@ -91,9 +113,21 @@ typedef void(^PlaceholderClickCallBack)(void);
 /** 保留父视图，便于显示操作*/
 @property (nonatomic,weak) UIView *parent;
 
+/** 占位图自顶部起向下偏移量（默认为父试图高高度的1/4）*/
+@property (nonatomic,assign) CGFloat offset;
+
+/** 距离顶部偏移量约束对象*/
+@property (nonatomic,strong) NSLayoutConstraint *offsetConstraint;
+
+/** 图片区域宽高比 （默认0.75）*/
+@property (nonatomic,assign) CGFloat imageAspect;
+
+/** 图片区域宽高比约束对象*/
+@property (nonatomic,strong) NSLayoutConstraint *imageAspectRatioConstraint;
+
 /**
  创建视图
-
+ 
  @param view 需要显示占位视图的视图
  @return 返回占位视图的实例
  */
@@ -101,7 +135,7 @@ typedef void(^PlaceholderClickCallBack)(void);
 
 /**
  改视图的占位视图
-
+ 
  @param view 视图
  @return 占位视图
  */
@@ -109,7 +143,7 @@ typedef void(^PlaceholderClickCallBack)(void);
 
 /**
  隐藏视图的占位视图
-
+ 
  @param view 视图
  */
 +(void)hidenPlaceholderViewForView:(UIView *)view;

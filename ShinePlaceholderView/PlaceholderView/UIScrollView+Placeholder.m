@@ -8,6 +8,7 @@
 #import "UIScrollView+Placeholder.h"
 #import "MJRefresh.h"
 #import "UIView+Placeholder.h"
+
 @implementation UIScrollView (Placeholder)
 
 
@@ -31,6 +32,8 @@
     method_exchangeImplementations(firstMethod, secondMethod);
 }
 
+
+
 -(void)shine_executeReloadDataBlock
 {
     [self shine_executeReloadDataBlock];
@@ -39,7 +42,6 @@
     
     if (count == 0) {
         [self.placeholderView show];
-        [self setupPlaceholderFrame];
     }else{
         [self.placeholderView dismiss];
     }
@@ -67,39 +69,4 @@
     }
 }
 
--(void)willMoveToSuperview:(UIView *)newSuperview
-{
-    [super willMoveToSuperview:newSuperview];
-    
-    if (newSuperview != nil) {
-        [self setupPlaceholderFrame];
-    }
-}
-
--(void)setupPlaceholderFrame
-{
-  
-    self.placeholderView.frame = self.bounds;
-    
-    CGFloat ofset = 0;
-    
-    if ([self isKindOfClass:[UITableView class]]) {
-        
-        UITableView *tableview = (UITableView *)self;
-        
-        if (tableview.tableHeaderView != nil) {
-            
-            ofset += tableview.tableHeaderView.bounds.size.height;
-        }
-    }
-    
-    if (self.contentOffset.y != 0) {
-        
-        self.placeholderView.frame = CGRectMake(0, ofset , self.bounds.size.width, self.bounds.size.height - ofset - self.contentInset.top);
-    }else{
-        
-        self.placeholderView.frame = CGRectMake(0, ofset, self.bounds.size.width, self.bounds.size.height - ofset);
-    }
-    
-}
 @end

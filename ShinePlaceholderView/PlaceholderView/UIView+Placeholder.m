@@ -22,17 +22,14 @@ static char *PlaceholderViewKey = "PlaceholderViewKey";
     PlaceholderView * view = objc_getAssociatedObject(self, PlaceholderViewKey);
     
     if (view == nil) {
-        
-        [self createPlaceholderView];
+        view = [[PlaceholderView alloc]initWithView:self];
+        view.hidden = YES;
+        self.placeholderView = view;
     }
     return view;
 }
 
--(void)createPlaceholderView
-{
-    self.placeholderView = [[PlaceholderView alloc]initWithView:self];
-    self.placeholderView.hidden = YES;
-}
+
 
 
 @end

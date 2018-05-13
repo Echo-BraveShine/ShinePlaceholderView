@@ -18,6 +18,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
+    self.window.backgroundColor = [UIColor whiteColor];
+    
     [PlaceholderViewConfiguration shareConfiguration].placeholderImage = nil;
     [PlaceholderViewConfiguration shareConfiguration].placeholder = @"PlaceholderView";
     return YES;
