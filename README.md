@@ -18,6 +18,11 @@ pod 'ShinePlaceholderView'
 ```objc
 [self.view.placeholderView show];
 ```
+### 隐藏PlaceholderView
+```objc
+[self.view.placeholderView dismiss];
+```
+
 ### 设置图片类型
 ```objc
 /**
