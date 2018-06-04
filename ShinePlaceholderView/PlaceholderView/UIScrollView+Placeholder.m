@@ -55,6 +55,10 @@ static char *showPlaceholderViewKey = "showPlaceholderViewKey";
     
     if (count == 0 && self.showPlaceholderView == YES) {
         [self.placeholderView show];
+        NSLog(@"%f",self.placeholderView.offset + self.placeholderView.bounds.size.height);
+        if (self.placeholderView.offset + self.placeholderView.bounds.size.height > self.bounds.size.height) {
+            self.contentSize = CGSizeMake(self.contentSize.width, self.placeholderView.offset + self.placeholderView.bounds.size.height);
+        }
     }else{
         [self.placeholderView dismiss];
     }

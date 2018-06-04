@@ -22,11 +22,15 @@
     
     [self.view.placeholderView show];
     
+    self.view.placeholderView.backgroundColor = [UIColor lightGrayColor];
+    
 
     self.view.placeholderView.imageClickCallBack = ^{
         NSLog(@"imageViewClick");
     };
-    
+    self.view.placeholderView.clickCallBack = ^{
+         NSLog(@"Click");
+    };
     self.view.placeholderView.textClickCallBack = ^{
         NSLog(@"textViewClick");
     };

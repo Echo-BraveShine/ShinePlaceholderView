@@ -20,7 +20,7 @@
     
     self.window.backgroundColor = [UIColor whiteColor];
     
-    [PlaceholderViewConfiguration shareConfiguration].placeholder = @"PlaceholderView";
+    [PlaceholderViewConfiguration shareConfiguration].placeholder = @"ShinePlaceholderView \n轻量级占位视图控件";
     return YES;
 }
 

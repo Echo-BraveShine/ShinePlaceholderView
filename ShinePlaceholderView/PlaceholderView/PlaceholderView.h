@@ -110,6 +110,10 @@ typedef void(^PlaceholderClickCallBack)(void);
 /** 文字区域点击回调*/
 @property (nonatomic,copy) PlaceholderClickCallBack textClickCallBack;
 
+/** 整个区域点击回调*/
+@property (nonatomic,copy) PlaceholderClickCallBack clickCallBack;
+
+
 /** 保留父视图，便于显示操作*/
 @property (nonatomic,weak) UIView *parent;
 

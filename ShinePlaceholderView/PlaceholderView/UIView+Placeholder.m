@@ -12,8 +12,6 @@ static char *PlaceholderViewKey = "PlaceholderViewKey";
 
 @implementation UIView (Placeholder)
 
-
-
 -(void)setPlaceholderView:(PlaceholderView *)placeholderView
 {
     objc_setAssociatedObject(self, PlaceholderViewKey, placeholderView, OBJC_ASSOCIATION_RETAIN);
@@ -30,8 +28,5 @@ static char *PlaceholderViewKey = "PlaceholderViewKey";
     }
     return view;
 }
-
-
-
 
 @end

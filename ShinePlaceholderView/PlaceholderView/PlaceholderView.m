@@ -140,8 +140,6 @@
         _placeholderButton.contentMode = 2;
         _placeholderImageView.translatesAutoresizingMaskIntoConstraints = NO;
         _placeholderImageView.userInteractionEnabled = YES;
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(placeholderImageClick:)];
-        [_placeholderImageView addGestureRecognizer:tap];
     }
     return _placeholderImageView;
 }
@@ -154,7 +152,7 @@
         _placeholderButton.titleLabel.textAlignment = NSTextAlignmentCenter;
         _placeholderButton.titleLabel.font = [UIFont systemFontOfSize:14];
         _placeholderButton.translatesAutoresizingMaskIntoConstraints = NO;
-        [_placeholderButton addTarget:self action:@selector(placeholderButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        _placeholderButton.userInteractionEnabled = NO;
     }
     return _placeholderButton;
 }
@@ -163,8 +161,9 @@
 -(void)setupViews
 {
     self.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addSubview:self.placeholderImageView];
-    [self addSubview:self.placeholderButton];
+
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(placeholderClick:)];
+    [self addGestureRecognizer:tap];
 }
 
 -(void)show
@@ -233,6 +232,7 @@
         [view removeFromSuperview];
     }
     
+    
     if (mode == PlaceholderViewModeText) {
         [self addSubview:self.placeholderButton];
     }else if (mode == PlaceholderViewModeImage) {
@@ -240,8 +240,7 @@
     }else{
         [self addSubview:self.placeholderImageView];
         [self addSubview:self.placeholderButton];
-    }
-    [self updateConstraints];
+    }    
 }
 
 
@@ -252,10 +251,24 @@
     }
     
 }
-- (void)placeholderImageClick:(UITapGestureRecognizer *)sender
+- (void)placeholderClick:(UITapGestureRecognizer *)sender
 {
-    if (self.imageClickCallBack) {
-        self.imageClickCallBack();
+    if (self.clickCallBack) {
+        self.clickCallBack();
+    }
+    CGPoint touchPoint = [sender locationInView:self];
+    CGRect imageRect = [self convertRect:self.placeholderImageView.bounds fromView:self.placeholderImageView];
+    
+    if (CGRectContainsPoint(imageRect, touchPoint) && self.mode != PlaceholderViewModeText) {
+        if (self.imageClickCallBack) {
+            self.imageClickCallBack();
+        }
+    }
+    CGRect textRect = [self convertRect:self.placeholderButton.bounds fromView:self.placeholderButton];
+    if (CGRectContainsPoint(textRect, touchPoint)&& self.mode != PlaceholderViewModeImage) {
+        if (self.textClickCallBack) {
+            self.textClickCallBack();
+        }
     }
 }
 
@@ -281,6 +294,7 @@
     if (self.offsetConstraint && self.superview) {
         self.offsetConstraint.constant = offset;
     }
+    [self updateConstraints];
 }
 
 -(void)setImageAspect:(CGFloat)imageAspect
@@ -363,13 +377,16 @@
 }
 
 
-
 -(void)updateConstraints
 {
     
     if (self.superview == nil) {
         [super updateConstraints];
         return;
+    }
+ 
+    if (self.offsetConstraint) {
+        [self.parent removeConstraint:self.offsetConstraint];
     }
     
     NSLayoutConstraint *contentCenterX = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.parent attribute:NSLayoutAttributeCenterX multiplier:1 constant:0];
@@ -383,6 +400,10 @@
     
     if (self.mode == PlaceholderViewModeDefault || self.mode == PlaceholderViewModeImage) {
         UIImageView *placeholderImageView = self.placeholderImageView;
+        
+        if (self.imageAspectRatioConstraint) {
+            [placeholderImageView removeConstraint:self.imageAspectRatioConstraint];
+        }
         
         NSLayoutConstraint *imageAspect = [NSLayoutConstraint constraintWithItem:placeholderImageView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:placeholderImageView attribute:NSLayoutAttributeWidth multiplier:0.75 constant:0];
         [placeholderImageView addConstraint:imageAspect];
@@ -398,7 +419,7 @@
         [self addConstraint:imageViewRight];
         
         if (self.mode == PlaceholderViewModeImage) {
-            NSLayoutConstraint *placeholderBottom = [NSLayoutConstraint constraintWithItem:placeholderImageView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1.0f constant:0];
+            NSLayoutConstraint *placeholderBottom = [NSLayoutConstraint constraintWithItem:placeholderImageView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1.0f constant:0];
             
             [self addConstraint:placeholderBottom];
         }
@@ -416,11 +437,11 @@
         [self addConstraint:btnBottom];
         
         if (self.mode == PlaceholderViewModeText) {
-            NSLayoutConstraint *btnTop = [NSLayoutConstraint constraintWithItem:placeholderButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0f constant:0];
+            NSLayoutConstraint *btnTop = [NSLayoutConstraint constraintWithItem:placeholderButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0f constant:0];
             [self addConstraint:btnTop];
         }else{
-            NSLayoutConstraint *btnTop = [NSLayoutConstraint constraintWithItem:placeholderButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.placeholderImageView attribute:NSLayoutAttributeBottom multiplier:1.0f constant:0];
-            [self addConstraint:btnTop];
+            NSLayoutConstraint *btnTopImage = [NSLayoutConstraint constraintWithItem:placeholderButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.placeholderImageView attribute:NSLayoutAttributeBottom multiplier:1.0f constant:0];
+            [self addConstraint:btnTopImage];
         }
     }
     [super updateConstraints];
