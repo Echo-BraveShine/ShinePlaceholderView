@@ -24,13 +24,16 @@
     
     self.tableView.tableFooterView = [UIView new];
     
-    UIView *header = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 0, 600)];
+    UIView *header = [[UIView alloc]initWithFrame:CGRectMake(0, -600, 300, 600)];
     
     header.backgroundColor = [UIColor redColor];
     
-    self.tableView.tableHeaderView = header;
+    [self.tableView addSubview:header];
+//
+    self.tableView.contentInset = UIEdgeInsetsMake(header.bounds.size.height, 0, 0, 0);
     
-    self.tableView.placeholderView.offset = self.tableView.tableHeaderView.bounds.size.height + 20;
+//    self.tableView.tableHeaderView = header;
+    self.tableView.placeholderView.offset = self.tableView.tableHeaderView.bounds.size.height + 10;
 
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(itemClick)];
 }
