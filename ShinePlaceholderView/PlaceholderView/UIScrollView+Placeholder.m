@@ -7,6 +7,7 @@
 
 #import "UIScrollView+Placeholder.h"
 #import "MJRefresh.h"
+static char *showPlaceholderViewKey = "showPlaceholderViewKey";
 
 @implementation UIScrollView (Placeholder)
 
@@ -32,6 +33,19 @@
 }
 
 
+- (void)setShowPlaceholderView:(BOOL)showPlaceholderView
+{
+    objc_setAssociatedObject(self, showPlaceholderViewKey, @(showPlaceholderView), OBJC_ASSOCIATION_ASSIGN);
+    
+    if (showPlaceholderView == NO) {
+        [self.placeholderView dismiss];
+    }
+}
+
+-(BOOL)showPlaceholderView
+{
+    return ((NSNumber *)objc_getAssociatedObject(self, showPlaceholderViewKey)).boolValue;
+}
 
 -(void)shine_executeReloadDataBlock
 {
@@ -39,7 +53,7 @@
     
     NSInteger count = [self mj_totalDataCount];
     
-    if (count == 0) {
+    if (count == 0 && self.showPlaceholderView == YES) {
         [self.placeholderView show];
     }else{
         [self.placeholderView dismiss];

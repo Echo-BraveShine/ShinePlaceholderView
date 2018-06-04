@@ -8,6 +8,8 @@
 
 #import "CollectionViewController.h"
 #import "MJRefresh.h"
+#import "UIScrollView+Placeholder.h"
+
 @interface CollectionViewController ()
 
 @property (nonatomic,assign) NSInteger count;
@@ -32,6 +34,8 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.collectionView.showPlaceholderView = YES;
+
     self.collectionView.backgroundColor = [UIColor whiteColor];
 
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];

@@ -10,4 +10,6 @@
 
 @interface UIScrollView (Placeholder)
 
+@property (nonatomic,assign)BOOL showPlaceholderView;
+
 @end

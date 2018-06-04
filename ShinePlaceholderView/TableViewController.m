@@ -7,7 +7,7 @@
 //
 
 #import "TableViewController.h"
-
+#import "UIScrollView+Placeholder.h"
 @interface TableViewController ()
 
 @end
@@ -16,6 +16,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    self.tableView.showPlaceholderView = YES;
 
     self.tableView.tableFooterView = [UIView new];
 
