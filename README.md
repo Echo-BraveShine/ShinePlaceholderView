@@ -23,6 +23,17 @@ pod 'ShinePlaceholderView'
 [self.view.placeholderView dismiss];
 ```
 
+### UITableView  UICollectionView 试用
+```objc
+
+UIScrollView 的showPlaceholderView 属性控制PlaceholderView显示  否则对已有的项目侵入性太强
+
+self.tableView.showPlaceholderView = YES;
+
+self.collectionView.showPlaceholderView = YES;
+
+```
+
 ### 设置图片类型
 ```objc
 /**
