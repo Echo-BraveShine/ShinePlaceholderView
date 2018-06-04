@@ -10,8 +10,8 @@
 
 @interface UIView (Placeholder)
 
+@property (nonatomic,assign)BOOL hiddenPlaceholderView;
+
 @property (nonatomic,strong) PlaceholderView *placeholderView;
-
-
 
 @end

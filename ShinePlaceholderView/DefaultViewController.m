@@ -18,6 +18,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+
+//    self.view.hiddenPlaceholderView = YES;
+//
+//    NSLog(@"%d",self.view.hiddenPlaceholderView);
+    
     self.view.backgroundColor = [UIColor whiteColor];
     
     [self.view.placeholderView show];
@@ -59,6 +64,7 @@
 }
 -(void)changeOffset
 {
+    self.view.hiddenPlaceholderView = YES;
     self.view.placeholderView.offset = self.view.placeholderView.offset == 200 ? 300 : 200;
 }
 

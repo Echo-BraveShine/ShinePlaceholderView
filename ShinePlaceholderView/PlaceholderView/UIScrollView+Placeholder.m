@@ -7,7 +7,6 @@
 
 #import "UIScrollView+Placeholder.h"
 #import "MJRefresh.h"
-#import "UIView+Placeholder.h"
 
 @implementation UIScrollView (Placeholder)
 

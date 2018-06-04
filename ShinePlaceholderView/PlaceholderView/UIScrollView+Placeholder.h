@@ -6,6 +6,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "UIView+Placeholder.h"
 
 @interface UIScrollView (Placeholder)
 
