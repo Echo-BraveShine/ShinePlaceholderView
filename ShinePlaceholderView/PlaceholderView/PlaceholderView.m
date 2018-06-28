@@ -19,7 +19,7 @@
     return config;
 }
 
-- (NSArray<UIImage *> *)animationImages
+-(NSArray<UIImage *> *)animationImages
 {
     if (!_animationImages) {
         
@@ -84,6 +84,21 @@
 @end
 
 
+
+@interface PlaceholderView ()
+
+/** 距离顶部偏移量约束对象*/
+@property (nonatomic,strong) NSLayoutConstraint *offsetConstraint;
+
+/** 图片区域宽高比约束对象*/
+@property (nonatomic,strong) NSLayoutConstraint *imageAspectRatioConstraint;
+
+/** 父视图与本视图的约束，更新约束是要删除*/
+@property (nonatomic,strong)NSMutableArray<NSLayoutConstraint *> *parentConstraints;
+
+
+@end
+
 @implementation PlaceholderView
 
 +(instancetype)placeholderViewForView:(UIView *)view
@@ -112,6 +127,14 @@
         [self setupViews];
     }
     return self;
+}
+
+-(NSMutableArray<NSLayoutConstraint *> *)parentConstraints
+{
+    if (!_parentConstraints) {
+        _parentConstraints = [NSMutableArray array];
+    }
+    return _parentConstraints;
 }
 
 -(instancetype)initWithFrame:(CGRect)frame
@@ -161,7 +184,7 @@
 -(void)setupViews
 {
     self.translatesAutoresizingMaskIntoConstraints = NO;
-
+    
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(placeholderClick:)];
     [self addGestureRecognizer:tap];
 }
@@ -240,7 +263,7 @@
     }else{
         [self addSubview:self.placeholderImageView];
         [self addSubview:self.placeholderButton];
-    }    
+    }
 }
 
 
@@ -294,7 +317,7 @@
     if (self.offsetConstraint && self.superview) {
         self.offsetConstraint.constant = offset;
     }
-    [self updateConstraints];
+    //    [self updateConstraints];
 }
 
 -(void)setImageAspect:(CGFloat)imageAspect
@@ -373,7 +396,7 @@
     self.parent = newSuperview;
     self.hidden = NO;
     [self defaultConfiguration];
-
+    
 }
 
 
@@ -384,10 +407,9 @@
         [super updateConstraints];
         return;
     }
- 
-    if (self.offsetConstraint) {
-        [self.parent removeConstraint:self.offsetConstraint];
-    }
+    
+    [self.parent removeConstraints:self.parentConstraints];
+    [self.parentConstraints removeAllObjects];
     
     NSLayoutConstraint *contentCenterX = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.parent attribute:NSLayoutAttributeCenterX multiplier:1 constant:0];
     NSLayoutConstraint *contentTop = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.parent attribute:NSLayoutAttributeTop multiplier:1 constant:self.offset];
@@ -398,6 +420,10 @@
     [self.parent addConstraint:contentTop];
     [self.parent addConstraint:contentWidth];
     
+    [self.parentConstraints addObject:self.offsetConstraint];
+    [self.parentConstraints addObject:contentCenterX];
+    [self.parentConstraints addObject:contentWidth];
+    
     if (self.mode == PlaceholderViewModeDefault || self.mode == PlaceholderViewModeImage) {
         UIImageView *placeholderImageView = self.placeholderImageView;
         
@@ -405,7 +431,7 @@
             [placeholderImageView removeConstraint:self.imageAspectRatioConstraint];
         }
         
-        NSLayoutConstraint *imageAspect = [NSLayoutConstraint constraintWithItem:placeholderImageView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:placeholderImageView attribute:NSLayoutAttributeWidth multiplier:0.75 constant:0];
+        NSLayoutConstraint *imageAspect = [NSLayoutConstraint constraintWithItem:placeholderImageView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:placeholderImageView attribute:NSLayoutAttributeWidth multiplier:self.imageAspect constant:0];
         [placeholderImageView addConstraint:imageAspect];
         self.imageAspectRatioConstraint = imageAspect;
         

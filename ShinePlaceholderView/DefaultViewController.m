@@ -24,6 +24,10 @@
     
     self.view.placeholderView.backgroundColor = [UIColor lightGrayColor];
     
+    self.view.placeholderView.animationImages = @[[UIImage imageNamed:@"placeholder_loading_gif_01"],[UIImage imageNamed:@"placeholder_loading_gif_02"],[UIImage imageNamed:@"placeholder_loading_gif_03"],[UIImage imageNamed:@"placeholder_loading_gif_04"],];
+    
+    self.view.placeholderView.type = PlaceholderImageTypeGif;
+    self.view.placeholderView.mode = PlaceholderViewModeImage;
 
     self.view.placeholderView.imageClickCallBack = ^{
         NSLog(@"imageViewClick");

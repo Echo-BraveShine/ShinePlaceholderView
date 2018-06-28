@@ -7,8 +7,6 @@
 
 #import <UIKit/UIKit.h>
 
-
-
 /**
  UIImageView的显示样式
  
@@ -33,9 +31,7 @@ typedef NS_ENUM(NSUInteger, PlaceholderViewMode) {
     PlaceholderViewModeImage,
 };
 
-/**
- 配置类  单例保存默认的配置信息，通过修改各属性可以修改默认配置
- */
+/** 配置类  单例保存默认的配置信息，通过修改各属性可以修改默认配置*/
 @interface PlaceholderViewConfiguration : NSObject
 
 /** 占位文字*/
@@ -65,6 +61,11 @@ typedef NS_ENUM(NSUInteger, PlaceholderViewMode) {
 /** 图片区域宽高比*/
 @property (nonatomic,assign) CGFloat imageAspect;
 
+/**
+ 获取单例类
+
+ @return 返回实例对象（单例）
+ */
 +(instancetype)shareConfiguration;
 
 @end
@@ -113,21 +114,14 @@ typedef void(^PlaceholderClickCallBack)(void);
 /** 整个区域点击回调*/
 @property (nonatomic,copy) PlaceholderClickCallBack clickCallBack;
 
-
 /** 保留父视图，便于显示操作*/
 @property (nonatomic,weak) UIView *parent;
 
 /** 占位图自顶部起向下偏移量（默认为父试图高高度的1/4）*/
 @property (nonatomic,assign) CGFloat offset;
 
-/** 距离顶部偏移量约束对象*/
-@property (nonatomic,strong) NSLayoutConstraint *offsetConstraint;
-
 /** 图片区域宽高比 （默认0.75）*/
 @property (nonatomic,assign) CGFloat imageAspect;
-
-/** 图片区域宽高比约束对象*/
-@property (nonatomic,strong) NSLayoutConstraint *imageAspectRatioConstraint;
 
 /**
  创建视图

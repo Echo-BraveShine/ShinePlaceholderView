@@ -8,41 +8,81 @@
 
 #import "TableViewController.h"
 #import "UIScrollView+Placeholder.h"
-@interface TableViewController ()
+//#import "Masonry.h"
+@interface TableViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic,assign)BOOL showCell;
 
+@property (nonatomic,strong)UITableView *tableView;
 
 @end
 
 @implementation TableViewController
 
+- (UITableView *)tableView
+{
+    if (!_tableView) {
+        _tableView = [[UITableView alloc]initWithFrame:self.view.bounds style:UITableViewStylePlain];
+        _tableView.delegate = self;
+        _tableView.dataSource = self;
+    }
+    return _tableView;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    
+    
+//    self.navigationController.navigationBar.translucent = NO;
+////
+//    self.automaticallyAdjustsScrollViewInsets = NO;
+//
+//    self.view.backgroundColor = [UIColor lightGrayColor];
+//
+////    self.tableView.frame = CGRectMake(0, 200, 320,300);
+//
+   
+//
+    self.tableView.placeholderView.imageAspect = 1.0;
 
     self.tableView.showPlaceholderView = YES;
-    
+
     self.tableView.tableFooterView = [UIView new];
     
-    UIView *header = [[UIView alloc]initWithFrame:CGRectMake(0, -600, 300, 600)];
+    self.tableView.placeholderView.animationImages = @[[UIImage imageNamed:@"placeholder_loading_gif_01"],[UIImage imageNamed:@"placeholder_loading_gif_02"],[UIImage imageNamed:@"placeholder_loading_gif_03"],[UIImage imageNamed:@"placeholder_loading_gif_04"],];
     
-    header.backgroundColor = [UIColor redColor];
+    self.tableView.placeholderView.type = PlaceholderImageTypeGif;
+    self.tableView.placeholderView.mode = PlaceholderViewModeImage;
+    self.tableView.placeholderView.placeholderImageView.backgroundColor = [UIColor lightGrayColor];
     
-    [self.tableView addSubview:header];
+    [self.view addSubview:self.tableView];
+    //
+//    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.top.right.bottom.equalTo(self.view);
+//    }];
 //
-    self.tableView.contentInset = UIEdgeInsetsMake(header.bounds.size.height, 0, 0, 0);
+//    UIView *header = [[UIView alloc]initWithFrame:CGRectMake(0, -600, 300, 600)];
+//
+//    header.backgroundColor = [UIColor redColor];
+//
+//    [self.tableView addSubview:header];
+////
+//    self.tableView.contentInset = UIEdgeInsetsMake(header.bounds.size.height, 0, 0, 0);
     
 //    self.tableView.tableHeaderView = header;
-    self.tableView.placeholderView.offset = self.tableView.tableHeaderView.bounds.size.height + 10;
+//    self.tableView.placeholderView.offset = self.tableView.tableHeaderView.bounds.size.height + 10;
 
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(itemClick)];
 }
 
 -(void)itemClick
 {
-    self.showCell = !self.showCell;
-    
-    [self.tableView reloadData];
+    self.tableView.placeholderView.imageAspect = self.tableView.placeholderView.imageAspect == 0.75 ? 1.0 : 0.75;
+
+//    self.showCell = !self.showCell;
+//
+//    [self.tableView reloadData];
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
