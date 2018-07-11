@@ -76,9 +76,17 @@
 -(NSTimeInterval)animationDuration
 {
     if (!_animationDuration) {
-        _animationDuration = 1;
+        _animationDuration = 1.0;
     }
     return _animationDuration;
+}
+
+-(CGFloat)placeholderRatio
+{
+    if (!_placeholderRatio) {
+        _placeholderRatio = 0.5;
+    }
+    return _placeholderRatio;
 }
 
 @end
@@ -92,6 +100,9 @@
 
 /** 图片区域宽高比约束对象*/
 @property (nonatomic,strong) NSLayoutConstraint *imageAspectRatioConstraint;
+
+/** 宽度约束对象*/
+@property (nonatomic,strong) NSLayoutConstraint *placeholderRatioConstraint;
 
 /** 父视图与本视图的约束，更新约束是要删除*/
 @property (nonatomic,strong)NSMutableArray<NSLayoutConstraint *> *parentConstraints;
@@ -297,6 +308,10 @@
 
 -(void)startAnimation
 {
+    if (!self.animationDuration) {
+        self.animationDuration = [PlaceholderViewConfiguration shareConfiguration].animationDuration;
+    }
+    
     self.placeholderImageView.animationImages = self.animationImages;
     self.placeholderImageView.animationDuration = self.animationDuration;
     self.placeholderImageView.animationRepeatCount = 0;
@@ -331,7 +346,23 @@
         NSLayoutConstraint *imageAspectConstraint = [NSLayoutConstraint constraintWithItem:self.placeholderImageView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.placeholderImageView attribute:NSLayoutAttributeWidth multiplier:imageAspect constant:0];
         [self.placeholderImageView addConstraint:imageAspectConstraint];
         self.imageAspectRatioConstraint = imageAspectConstraint;
-        [self layoutIfNeeded];
+//        [self layoutIfNeeded];
+    }
+}
+
+-(void)setPlaceholderRatio:(CGFloat)placeholderRatio
+{
+    if (_placeholderRatio == placeholderRatio) {
+        return;
+    }
+    _placeholderRatio = placeholderRatio;
+    
+    if (self.placeholderRatioConstraint && self.superview) {
+//        self.placeholderRatioConstraint.constant = _placeholderRatio;
+        [self.parent removeConstraint:self.placeholderRatioConstraint];
+        self.placeholderRatioConstraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.parent attribute:NSLayoutAttributeWidth multiplier:self.placeholderRatio constant:0];
+        
+        [self.parent addConstraint:self.placeholderRatioConstraint];
     }
 }
 
@@ -352,13 +383,7 @@
     if (!self.animationImages) {
         self.animationImages = config.animationImages;
     }
-    
-    if (!self.animationDuration) {
-        self.animationDuration = config.animationDuration;
-    }else{
-        self.animationDuration = self.animationDuration;
-    }
-    
+   
     if (!self.type) {
         self.type = config.type;
     }else{
@@ -384,6 +409,10 @@
             self.imageAspect = config.imageAspect;
         }
     }
+    
+    if (!self.placeholderRatio) {
+        self.placeholderRatio = config.placeholderRatio;
+    }
 }
 
 -(void)willMoveToSuperview:(UIView *)newSuperview
@@ -407,14 +436,18 @@
         [super updateConstraints];
         return;
     }
+
     
     [self.parent removeConstraints:self.parentConstraints];
+    
     [self.parentConstraints removeAllObjects];
     
     NSLayoutConstraint *contentCenterX = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.parent attribute:NSLayoutAttributeCenterX multiplier:1 constant:0];
     NSLayoutConstraint *contentTop = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.parent attribute:NSLayoutAttributeTop multiplier:1 constant:self.offset];
     self.offsetConstraint = contentTop;
-    NSLayoutConstraint *contentWidth = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationLessThanOrEqual toItem:self.parent attribute:NSLayoutAttributeWidth multiplier:0.75 constant:0];
+    NSLayoutConstraint *contentWidth = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.parent attribute:NSLayoutAttributeWidth multiplier:self.placeholderRatio constant:0];
+    
+    self.placeholderRatioConstraint = contentWidth;
     
     [self.parent addConstraint:contentCenterX];
     [self.parent addConstraint:contentTop];

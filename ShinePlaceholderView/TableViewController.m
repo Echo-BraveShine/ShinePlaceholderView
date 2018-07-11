@@ -32,23 +32,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    
-    
-//    self.navigationController.navigationBar.translucent = NO;
-////
-//    self.automaticallyAdjustsScrollViewInsets = NO;
-//
-//    self.view.backgroundColor = [UIColor lightGrayColor];
-//
-////    self.tableView.frame = CGRectMake(0, 200, 320,300);
-//
-   
-//
-    self.tableView.placeholderView.imageAspect = 1.0;
-
+  
     self.tableView.showPlaceholderView = YES;
 
     self.tableView.tableFooterView = [UIView new];
+    self.tableView.placeholderView.animationDuration = 2.0;
     
     self.tableView.placeholderView.animationImages = @[[UIImage imageNamed:@"placeholder_loading_gif_01"],[UIImage imageNamed:@"placeholder_loading_gif_02"],[UIImage imageNamed:@"placeholder_loading_gif_03"],[UIImage imageNamed:@"placeholder_loading_gif_04"],];
     
@@ -57,21 +45,7 @@
     self.tableView.placeholderView.placeholderImageView.backgroundColor = [UIColor lightGrayColor];
     
     [self.view addSubview:self.tableView];
-    //
-//    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.top.right.bottom.equalTo(self.view);
-//    }];
-//
-//    UIView *header = [[UIView alloc]initWithFrame:CGRectMake(0, -600, 300, 600)];
-//
-//    header.backgroundColor = [UIColor redColor];
-//
-//    [self.tableView addSubview:header];
-////
-//    self.tableView.contentInset = UIEdgeInsetsMake(header.bounds.size.height, 0, 0, 0);
-    
-//    self.tableView.tableHeaderView = header;
-//    self.tableView.placeholderView.offset = self.tableView.tableHeaderView.bounds.size.height + 10;
+  
 
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(itemClick)];
 }

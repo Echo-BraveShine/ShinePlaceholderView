@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "ShinePlaceholderView"
-  s.version      = "1.1.1"
+  s.version      = "1.1.2"
   s.summary      = "轻量级占位试图"
   s.description  = <<-DESC
         轻量级占位试图  列表页自动显示

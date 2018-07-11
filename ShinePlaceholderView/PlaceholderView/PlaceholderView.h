@@ -61,6 +61,9 @@ typedef NS_ENUM(NSUInteger, PlaceholderViewMode) {
 /** 图片区域宽高比*/
 @property (nonatomic,assign) CGFloat imageAspect;
 
+/** 内容区域相对于父控件的比例 默认0.5*/
+@property (nonatomic,assign) CGFloat placeholderRatio;
+
 /**
  获取单例类
 
@@ -122,6 +125,11 @@ typedef void(^PlaceholderClickCallBack)(void);
 
 /** 图片区域宽高比 （默认0.75）*/
 @property (nonatomic,assign) CGFloat imageAspect;
+
+/** 内容区域相对于父控件的比例 默认0.5*/
+@property (nonatomic,assign) CGFloat placeholderRatio;
+
+
 
 /**
  创建视图

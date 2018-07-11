@@ -19,7 +19,7 @@
     // Override point for customization after application launch.
     
     self.window.backgroundColor = [UIColor whiteColor];
-    
+    [PlaceholderViewConfiguration shareConfiguration].placeholderRatio = 0.7;
     [PlaceholderViewConfiguration shareConfiguration].placeholder = @"ShinePlaceholderView \n轻量级占位视图控件";
     return YES;
 }

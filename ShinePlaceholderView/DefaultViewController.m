@@ -40,8 +40,8 @@
     };
 
     
-    NSArray *array1 = @[@"changeType",@"changeMode",@"changeOffset",@"changeImageAspect"];
-    NSArray *array2 = @[@"Type",@"Mode",@"Offset",@"ImageAspect"];
+    NSArray *array1 = @[@"changeType",@"changeMode",@"changeOffset",@"changeImageAspect",@"changeRatio"];
+    NSArray *array2 = @[@"Type",@"Mode",@"Offset",@"Aspect",@"Ratio"];
 
     NSMutableArray *items = [NSMutableArray array];
     for (NSInteger i = 0 ; i<array1.count ; i++) {
@@ -73,6 +73,11 @@
 -(void)changeImageAspect
 {
     self.view.placeholderView.imageAspect = self.view.placeholderView.imageAspect == 0.75 ? 1.0 : 0.75;
+}
+
+-(void)changeRatio
+{
+    self.view.placeholderView.placeholderRatio =  self.view.placeholderView.placeholderRatio == 0.5 ? 0.7 : 0.5;
 }
 
 @end
